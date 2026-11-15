@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Ingresar · ITSE</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Aplica el tema guardado (o el del sistema) antes de pintar, así no parpadea -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('itse-theme'); } catch (e) {}
+      var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- Fondo: dibujo vectorizado del instituto, una versión por tema -->
+  <div class="scene" aria-hidden="true">
+    <div class="scene__art scene__art--light"></div>
+    <div class="scene__art scene__art--dark"></div>
+  </div>
+
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar a modo oscuro">
+    <svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z"/></svg>
+    <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+  </button>
+
+  <main class="shell">
+    <section class="card" aria-labelledby="title">
+
+      <div class="card__form">
+        <div class="brand">
+          <svg class="brand__mark" viewBox="0 0 30 22" aria-hidden="true"><defs><linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#029ee8"/><stop offset=".55" stop-color="#7a5fb0"/><stop offset="1" stop-color="#e0113f"/></linearGradient></defs><path d="M3 3l8 8-8 8M16 3l8 8-8 8"/></svg>
+          <span class="brand__name">ITSE</span>
+        </div>
+
+        <h1 id="title">Ingresar</h1>
+        <p class="lead">Accedé al Sistema de Gestión Académica.</p>
+
+        <form id="loginForm" novalidate>
+
+          <fieldset class="roles">
+            <legend>Ingresar como</legend>
+            <div class="roles__list">
+              <label class="chip"><input type="radio" name="role" value="ALUMNO" checked><span>Alumno</span></label>
+              <label class="chip"><input type="radio" name="role" value="DOCENTE"><span>Docente</span></label>
+              <label class="chip"><input type="radio" name="role" value="SECRETARIA_BEDELIA"><span>Secretaría</span></label>
+              <label class="chip"><input type="radio" name="role" value="JEFE_BEDELIA"><span>Jefe de Bedelía</span></label>
+              <label class="chip"><input type="radio" name="role" value="DIRECTOR"><span>Director</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="identifier">Usuario o email</label>
+            <input id="identifier" name="identifier" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Escribí tu usuario o email" aria-describedby="identifierError">
+            <p class="field__error" id="identifierError" hidden></p>
+          </div>
+
+          <div class="field">
+            <label for="password">Contraseña</label>
+            <div class="field__control">
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Escribí tu contraseña" aria-describedby="passwordError capsHint">
+              <button class="eye" id="togglePassword" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
+                <svg class="icon icon--eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.8"/></svg>
+                <svg class="icon icon--eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 5.7A10.6 10.6 0 0 1 12 5.5c6.4 0 10 6.5 10 6.5a17 17 0 0 1-3.1 3.9M6.6 7.2C3.7 9 2 12 2 12s3.6 6.5 10 6.5c1.6 0 3-.4 4.3-1M9.9 9.9a2.8 2.8 0 0 0 4.2 3.7"/></svg>
+              </button>
+            </div>
+            <p class="field__error" id="passwordError" hidden></p>
+            <p class="field__hint" id="capsHint" hidden>Tenés el Bloq Mayús activado.</p>
+          </div>
+
+          <div class="row">
+            <label class="check">
+              <input type="checkbox" id="remember" name="remember">
+              <span class="check__box" aria-hidden="true"></span>
+              <span>Recordar mi usuario</span>
+            </label>
+            <a class="link" href="recuperar.html">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <p class="alert" id="formAlert" role="alert" hidden></p>
+
+          <button class="btn" id="submitBtn" type="submit">
+            <span class="btn__label">Ingresar</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+
+          <!-- ============================================================
+               SI USÁS reCAPTCHA (como el login viejo), pegá acá el widget:
+               <div class="g-recaptcha" data-sitekey="TU_SITE_KEY"></div>
+               y agregá el <script src="https://www.google.com/recaptcha/api.js"></script>
+               ============================================================ -->
+        </form>
+
+        <p class="help">¿Problemas para ingresar? Consultá en Bedelía.</p>
+        <p class="demo" id="demoHint" hidden></p>
+      </div>
+
+      <aside class="card__visual" id="visual" aria-hidden="true">
+        <canvas id="matrix"></canvas>
+      </aside>
+
+    </section>
+  </main>
+
+  <footer class="ministry">
+    <span class="ministry__bar" aria-hidden="true"></span>
+    <span>Ministerio de Educación, Ciencia y Tecnología
+      <small>Gobierno de la Provincia de Santiago del Estero</small>
+    </span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
